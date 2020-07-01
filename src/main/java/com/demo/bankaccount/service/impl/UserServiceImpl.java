@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
 		String password = ("*").concat(pan).concat(date).concat("@");
 		String id = registerRequestDto.getUserName().substring(1, 2);
 		String mobile = registerRequestDto.getMobileNumber().substring(7, 9);
-		String customerId = LocalDate.now().toString().substring(2, 4).concat(id).concat(mobile);
+		String customerId = LocalDate.now().toString().substring(2, 4).concat(id).concat(mobile).concat(pan);
 		
 		logger.info("Saving User");
 		user.setAge(age);

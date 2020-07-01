@@ -104,7 +104,7 @@ public class UserServiceImplTest {
 		user.setUserId(1L);
 		user.setUserName("testUser");
 
-		assertThat(!(loginDto.getCustomerId().isEmpty() && loginDto.getPassword().isEmpty()));
+		assertThat(!(loginDto.getCustomerId().isEmpty() && loginDto.getPassword().isEmpty())).isTrue();
 
 		when(userDao.findByCustomerIdAndPassword("TEST123", "test123")).thenReturn(Optional.of(user));
 		userServiceImpl.loginUser(loginDto);

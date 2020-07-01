@@ -10,7 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.demo.bankaccount.dto.AccountType;
-
+/**
+ * Generates Account table with accountId,accountNumber,balance,
+ * accountType and userId
+ * @author haritha
+ *
+ */
 @Entity
 public class Account {
 	@Id

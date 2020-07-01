@@ -12,9 +12,11 @@ import com.demo.bankaccount.model.User;
 public interface UserDao extends CrudRepository<User, Long> {
 
 	
-Optional<User> findByUserId(Long userId);
+
 	Optional<User> findByPanNumber(String panNumber);
 
 	Optional<User> findByCustomerIdAndPassword(String customerId, String password);
+
+	Optional<User> findByUserId(Long userId);
 
 }
