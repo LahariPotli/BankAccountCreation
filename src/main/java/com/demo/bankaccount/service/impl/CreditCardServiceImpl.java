@@ -40,14 +40,16 @@ public class CreditCardServiceImpl implements CreditCardService {
 		logger.info("Inside get credit card details in creditcard service impl");
 
 		CreditCardResponseDto creditCardResponseDto = new CreditCardResponseDto();
+		logger.info("verifying user existence");
 		Optional<User> useroptional = userDao.findByUserId(userId);
+			
 
 		if (!useroptional.isPresent()) {
 			logger.info("user does not exist");
 
 			creditCardResponseDto.setMessage("please verify userid");
 			creditCardResponseDto.setStatusCode(HttpStatus.EXPECTATION_FAILED.value());
-
+			
 			return creditCardResponseDto;
 		}
 		CreditCard creditcard = new CreditCard();
@@ -62,7 +64,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 			creditCardResponseDto.setCreditCardType(CreditCardType.PLATINUM);
 			creditCardResponseDto.setMessage("You have successfully applied for platinum credit card");
 			creditCardResponseDto.setStatusCode(HttpStatus.CREATED.value());
-
+			
 			creditCardDao.save(creditcard);
 			return creditCardResponseDto;
 		}
@@ -76,12 +78,13 @@ public class CreditCardServiceImpl implements CreditCardService {
 			creditCardResponseDto.setCreditCardType(CreditCardType.GOLD);
 			creditCardResponseDto.setMessage("You have successfully applied for gold credit card");
 			creditCardResponseDto.setStatusCode(HttpStatus.CREATED.value());
-
+			logger.info("save creditCard");
 			creditCardDao.save(creditcard);
 			return creditCardResponseDto;
 		}
 		if (useroptional.get().getSalary() < 30000) {
 			logger.info("user exists and salary is less than thirty thousand ");
+			
 			creditcard.setCreditCardType(CreditCardType.SILVER);
 			creditcard.setUser(useroptional.get());
 			creditcard.setDate(LocalDate.now());

@@ -1,6 +1,5 @@
 package com.demo.bankaccount.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.demo.bankaccount.dao.AccountDao;
 import com.demo.bankaccount.dao.UserDao;
 import com.demo.bankaccount.dto.AccountResponseDto;
@@ -39,15 +39,62 @@ public class AccountServiceImplTest {
 
 	@Test
 	public void getAccountsByUserId() {
+		
 		List<Account> accountList = new ArrayList<>();
 		AccountResponseDto responseDto = new AccountResponseDto();
+		
 		responseDto.setAccountNumber("9876899098");
 		responseDto.setAccountType(AccountType.SAVING);
 		responseDto.setBalance(50000);
+		
 		when(userDao.findByUserId(1L)).thenReturn(Optional.of(user));
+		
 		when(accountDao.findByUser(Mockito.any(User.class))).thenReturn(Optional.of(accountList));
+		
 		accountServiceImpl.getAccountsByUserId(1L);
+		
+		verify(userDao).findByUserId(1L);
+		
 		verify(accountDao).findByUser(user);
+		
 	}
+	
+	@Test
+	public void getAccountsByUserId1() {
+			
+		AccountResponseDto responseDto = new AccountResponseDto();
+		
+		responseDto.setAccountNumber("9876899098");
+		responseDto.setAccountType(AccountType.SAVING);
+		responseDto.setBalance(50000);	
+		
+		when(userDao.findByUserId(1L)).thenReturn(Optional.ofNullable(user));
+		accountServiceImpl.getAccountsByUserId(1L);
+		verify(userDao).findByUserId(1L);
+		
+	}
+	
+	@Test
+	public void getAccountsByUserId3() {
+		
+		List<Account> accountList = new ArrayList<>();
+		AccountResponseDto responseDto = new AccountResponseDto();
+		
+		responseDto.setAccountNumber("9876899098");
+		responseDto.setAccountType(AccountType.SAVING);
+		responseDto.setBalance(50000);
+		
+		when(userDao.findByUserId(1L)).thenReturn(Optional.of(user));
+		
+		when(accountDao.findByUser(Mockito.any(User.class))).thenReturn(Optional.ofNullable(accountList));
+		
+		accountServiceImpl.getAccountsByUserId(1L);
+		
+		verify(userDao).findByUserId(1L);
+		
+		verify(accountDao).findByUser(user);
+		
+	}
+	
 
 }

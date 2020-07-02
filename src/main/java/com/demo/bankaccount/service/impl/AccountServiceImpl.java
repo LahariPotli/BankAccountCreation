@@ -44,11 +44,14 @@ public class AccountServiceImpl implements AccountService {
 		if (!user.isPresent()) {
 			logger.info("userId is not valid");
 			accountListResponseDto.setMessage("incorrect userId..Please verify userId");
-			accountListResponseDto.setStatusCode(404);
+			accountListResponseDto.setStatusCode(417);
 			return accountListResponseDto;
 		}
 		Optional<List<Account>> accounts = accountDao.findByUser(user.get());
 		if (!accounts.isPresent()) {
+			
+			logger.info("no accounts exist");
+			
 			accountListResponseDto.setMessage("No accounts for this userId");
 			accountListResponseDto.setStatusCode(404);
 			return accountListResponseDto;
@@ -56,6 +59,7 @@ public class AccountServiceImpl implements AccountService {
 
 		List<AccountResponseDto> accountResponseDto = accounts.get().stream()
 				.map(account -> getAccountResponseDto(account)).collect(Collectors.toList());
+		logger.info("fetching the accounts for a particular User");
 		accountListResponseDto.setAccountResponseDto(accountResponseDto);
 		accountListResponseDto.setMessage("Please find the account details");
 		accountListResponseDto.setStatusCode(200);
