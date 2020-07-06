@@ -16,6 +16,7 @@ import com.demo.bankaccount.dto.LoginDto;
 import com.demo.bankaccount.dto.LoginResponseDto;
 import com.demo.bankaccount.dto.RegisterRequestDto;
 import com.demo.bankaccount.dto.RegisterResponseDto;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.Account;
 import com.demo.bankaccount.model.User;
 import com.demo.bankaccount.service.UserService;
@@ -138,28 +139,19 @@ public class UserServiceImpl implements UserService{
 		
 		logger.info("Validating the request");
 		
-		if(loginDto.getCustomerId().isEmpty()||loginDto.getPassword().isEmpty())
-		{
-			loginResponseDto.setMessage("All fields are mandatory");
-			loginResponseDto.setStatusCode(HttpStatus.BAD_REQUEST.value());
-			return loginResponseDto;
-		}
 		Optional<User> userOptional  = userDao.findByCustomerIdAndPassword(loginDto.getCustomerId(),loginDto.getPassword());
 		
 		logger.info("verifying the existence of User");
 		
-		Boolean isExists = userOptional.isPresent();
-		if(isExists)
+		if(!userOptional.isPresent())
 		{
+			throw new ResourceNotFoundException("User not found ");
+		}
 			loginResponseDto.setMessage("User logged in successfully");
 			loginResponseDto.setStatusCode(HttpStatus.OK.value());
 			return loginResponseDto;
 			
-		}
 		
-			loginResponseDto.setMessage("Invalid credentials!!Please verify ");
-			loginResponseDto.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-			return loginResponseDto;	
 	}
 	
 	

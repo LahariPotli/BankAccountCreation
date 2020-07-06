@@ -14,6 +14,7 @@ import com.demo.bankaccount.dao.AccountDao;
 import com.demo.bankaccount.dao.UserDao;
 import com.demo.bankaccount.dto.AccountListResponseDto;
 import com.demo.bankaccount.dto.AccountResponseDto;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.Account;
 import com.demo.bankaccount.model.User;
 import com.demo.bankaccount.service.AccountService;
@@ -42,10 +43,7 @@ public class AccountServiceImpl implements AccountService {
 		Optional<User> user = userDao.findByUserId(userId);
 
 		if (!user.isPresent()) {
-			logger.info("userId is not valid");
-			accountListResponseDto.setMessage("incorrect userId..Please verify userId");
-			accountListResponseDto.setStatusCode(417);
-			return accountListResponseDto;
+			throw new ResourceNotFoundException("User is not found with the requested userId"); 
 		}
 		Optional<List<Account>> accounts = accountDao.findByUser(user.get());
 		if (!accounts.isPresent()) {

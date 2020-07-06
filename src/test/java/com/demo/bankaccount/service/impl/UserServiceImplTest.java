@@ -2,6 +2,9 @@ package com.demo.bankaccount.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
 
@@ -24,9 +28,10 @@ import com.demo.bankaccount.dto.LoginDto;
 import com.demo.bankaccount.dto.LoginResponseDto;
 import com.demo.bankaccount.dto.RegisterRequestDto;
 import com.demo.bankaccount.dto.RegisterResponseDto;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.User;
 import com.demo.bankaccount.service.UserService;
-
+import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
 
@@ -141,6 +146,39 @@ public class UserServiceImplTest {
 		verify(userDao).findByCustomerIdAndPassword("TEST123", "test123");
 
 	}
+	
+	@Test
+	public void loginUserTest3() throws ResourceNotFoundException{
+		LoginDto loginDto = new LoginDto();
+		loginDto.setCustomerId("TEST123");
+		loginDto.setPassword("test123");
+		
+		loginResponseDto = new LoginResponseDto();
+		loginResponseDto.setMessage("Employee logged in");
+		loginResponseDto.setStatusCode(200);
+
+		User user = new User();
+		user.setAge(20);
+		user.setCustomerId("TEST123");
+		user.setDateOfBirth(LocalDate.parse("2020-06-30"));
+		user.setMobileNumber("834769854");
+		user.setOccupation("engineer");
+		user.setPanNumber("test1234");
+		user.setPassword("test123");
+		user.setSalary(50000);
+		user.setUserId(1L);
+		user.setUserName("testUser");
+		
+	    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+	        userServiceImpl.loginUser(loginDto);
+	    });
+	 
+	    String expectedMessage = "User not found";
+	    String actualMessage = exception.getMessage();
+	    assertTrue(actualMessage.contains(expectedMessage));
+
+	}
+	
 	
 	@Test
 	public void registerUserTest2() {

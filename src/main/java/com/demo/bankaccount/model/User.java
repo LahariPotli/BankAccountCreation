@@ -14,14 +14,23 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long userId;
+	
 	private String userName;
+	
 	private int age;
+	
 	private String panNumber;
+	
 	private String mobileNumber;
+	
 	private LocalDate dateOfBirth;
+	
 	private String password;
+	
 	private String occupation;
+	
 	private double salary;
+	
 	private String customerId;
 	
 	public Long getUserId() {

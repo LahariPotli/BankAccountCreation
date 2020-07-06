@@ -1,6 +1,8 @@
 package com.demo.bankaccount.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,6 +20,7 @@ import com.demo.bankaccount.dao.CreditCardDao;
 import com.demo.bankaccount.dao.UserDao;
 import com.demo.bankaccount.dto.CreditCardResponseDto;
 import com.demo.bankaccount.dto.CreditCardType;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.CreditCard;
 import com.demo.bankaccount.model.User;
 
@@ -177,6 +180,43 @@ public class CreditCardServiceImplTest {
 		creditcardserviceimpl.getCreditCardDetails(2L);
 		
 		verify(userdao).findByUserId(2L);
+		
+		
+	}
+	
+	
+	@Test
+	public void getcreditcarddetailsbyuserid4() {
+		CreditCardResponseDto credircardresponsedto=new CreditCardResponseDto();
+		User user=new User();
+		user = new User();
+		user.setAge(20);
+		user.setCustomerId("test123");
+		user.setDateOfBirth(LocalDate.parse("2020-06-30"));
+		user.setMobileNumber("486759854");
+		user.setOccupation("engineer");
+		user.setPanNumber("testPAN123");
+		user.setPassword("test123");
+		user.setSalary(40000);
+		user.setUserId(2L);
+		user.setUserName("testName");
+		
+		credircardresponsedto.setMessage("your credit card type is Platinum");
+		credircardresponsedto.setStatusCode(201);
+		credircardresponsedto.setCreditCardType(CreditCardType.PLATINUM);
+		CreditCard creditCard = new CreditCard();
+		creditCard.setCreditCardId(2L);
+		creditCard.setCreditCardType(CreditCardType.PLATINUM);
+		creditCard.setDate(LocalDate.now());
+		creditCard.setUser(user);
+			
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			creditcardserviceimpl.getCreditCardDetails(1L);
+	    });
+	 
+	    String expectedMessage = "User is not found with userId";
+	    String actualMessage = exception.getMessage();
+	    assertTrue(actualMessage.contains(expectedMessage));
 		
 		
 	}

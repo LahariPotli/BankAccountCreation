@@ -15,6 +15,7 @@ import com.demo.bankaccount.dao.CreditCardDao;
 import com.demo.bankaccount.dao.UserDao;
 import com.demo.bankaccount.dto.CreditCardResponseDto;
 import com.demo.bankaccount.dto.CreditCardType;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.CreditCard;
 import com.demo.bankaccount.model.User;
 import com.demo.bankaccount.service.CreditCardService;
@@ -44,13 +45,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 		Optional<User> useroptional = userDao.findByUserId(userId);
 			
 
-		if (!useroptional.isPresent()) {
-			logger.info("user does not exist");
-
-			creditCardResponseDto.setMessage("please verify userid");
-			creditCardResponseDto.setStatusCode(HttpStatus.EXPECTATION_FAILED.value());
-			
-			return creditCardResponseDto;
+		if (!useroptional.isPresent())
+		{
+			throw new ResourceNotFoundException("User is not found with userId");
 		}
 		CreditCard creditcard = new CreditCard();
 

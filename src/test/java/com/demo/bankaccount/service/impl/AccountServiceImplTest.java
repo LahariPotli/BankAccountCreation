@@ -1,5 +1,7 @@
 package com.demo.bankaccount.service.impl;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +21,7 @@ import com.demo.bankaccount.dao.AccountDao;
 import com.demo.bankaccount.dao.UserDao;
 import com.demo.bankaccount.dto.AccountResponseDto;
 import com.demo.bankaccount.dto.AccountType;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.Account;
 import com.demo.bankaccount.model.User;
 
@@ -96,5 +99,23 @@ public class AccountServiceImplTest {
 		
 	}
 	
-
+	@Test
+	public void getAccountsByUserId4() {
+		
+		
+		AccountResponseDto responseDto = new AccountResponseDto();
+		
+		responseDto.setAccountNumber("9876899098");
+		responseDto.setAccountType(AccountType.SAVING);
+		responseDto.setBalance(50000);
+		
+		 ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+		        accountServiceImpl.getAccountsByUserId(1L);
+		    });
+		 
+		    String expectedMessage = "User is not found with the requested userId";
+		    String actualMessage = exception.getMessage();
+		    assertTrue(actualMessage.contains(expectedMessage));
+	}
+	
 }
