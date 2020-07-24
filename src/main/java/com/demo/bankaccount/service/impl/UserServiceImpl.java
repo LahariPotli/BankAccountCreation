@@ -67,6 +67,8 @@ public class UserServiceImpl implements UserService{
 	 logger.info("verifying the existence of User");
 	 Optional<User> userOptional = userDao.findByPanNumber(registerRequestDto.getPanNumber());
 	 
+	 
+	 
 	Boolean isExists =  userOptional.isPresent();
 	if(isExists)
 	{
