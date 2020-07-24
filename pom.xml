@@ -35,6 +35,8 @@
       	src/main/java/com/demo/bankaccountcreation/service/AccountService.java
       	src/main/java/com/demo/bankaccountcreation/service/CreditCardService.java
       	src/main/java/com/demo/bankaccountcreation/service/UserService.java
+      	src/main/java/com/demo/bankaccountcreation/exception/ConstraintViolationException.java
+      	src/main/java/com/demo/bankaccountcreation/exception/ErrorResponse.java
         </sonar.coverage.exclusions>
 	</properties>
 

@@ -20,7 +20,7 @@ public interface UserService {
 	 */
 	public RegisterResponseDto registerUser( RegisterRequestDto registerRequestDto);
 	
-	//public RegisterResponseDto saveUser(RegisterRequestDto registerRequestDto, int age);
+	
 
 	public LoginResponseDto loginUser(@Valid LoginDto loginDto);
 

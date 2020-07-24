@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 
 import com.demo.bankaccount.dto.CreditCardType;
 
+/**
+ * @author Lahari_Reddy
+ *
+ */
 @Entity
 public class CreditCard {
 	@Id
@@ -23,31 +27,37 @@ public class CreditCard {
 	private LocalDate date;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private User user;
-	
+
 	public Long getCreditCardId() {
 		return creditCardId;
 	}
+
 	public void setCreditCardId(Long creditCardId) {
 		this.creditCardId = creditCardId;
 	}
+
 	public CreditCardType getCreditCardType() {
 		return creditCardType;
 	}
+
 	public void setCreditCardType(CreditCardType creditCardType) {
 		this.creditCardType = creditCardType;
 	}
+
 	public LocalDate getDate() {
 		return date;
 	}
+
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 
 }

@@ -16,6 +16,7 @@ import com.demo.bankaccount.dto.LoginDto;
 import com.demo.bankaccount.dto.LoginResponseDto;
 import com.demo.bankaccount.dto.RegisterRequestDto;
 import com.demo.bankaccount.dto.RegisterResponseDto;
+import com.demo.bankaccount.exception.ResourceNotFoundException;
 import com.demo.bankaccount.model.Account;
 import com.demo.bankaccount.model.User;
 import com.demo.bankaccount.service.UserService;
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService{
 		String password = ("*").concat(pan).concat(date).concat("@");
 		String id = registerRequestDto.getUserName().substring(1, 2);
 		String mobile = registerRequestDto.getMobileNumber().substring(7, 9);
-		String customerId = LocalDate.now().toString().substring(2, 4).concat(id).concat(mobile);
+		String customerId = LocalDate.now().toString().substring(2, 4).concat(id).concat(mobile).concat(pan);
 		
 		logger.info("Saving User");
 		user.setAge(age);
@@ -140,28 +141,19 @@ public class UserServiceImpl implements UserService{
 		
 		logger.info("Validating the request");
 		
-		if(loginDto.getCustomerId().isEmpty()||loginDto.getPassword().isEmpty())
-		{
-			loginResponseDto.setMessage("All fields are mandatory");
-			loginResponseDto.setStatusCode(HttpStatus.BAD_REQUEST.value());
-			return loginResponseDto;
-		}
 		Optional<User> userOptional  = userDao.findByCustomerIdAndPassword(loginDto.getCustomerId(),loginDto.getPassword());
 		
 		logger.info("verifying the existence of User");
 		
-		Boolean isExists = userOptional.isPresent();
-		if(isExists)
+		if(!userOptional.isPresent())
 		{
+			throw new ResourceNotFoundException("User not found ");
+		}
 			loginResponseDto.setMessage("User logged in successfully");
 			loginResponseDto.setStatusCode(HttpStatus.OK.value());
 			return loginResponseDto;
 			
-		}
 		
-			loginResponseDto.setMessage("Invalid credentials!!Please verify ");
-			loginResponseDto.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-			return loginResponseDto;	
 	}
 	
 	

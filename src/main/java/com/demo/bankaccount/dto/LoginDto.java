@@ -1,5 +1,7 @@
 package com.demo.bankaccount.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * @author Suma
  * Generates class with parameters customerId and password
@@ -7,8 +9,9 @@ package com.demo.bankaccount.dto;
  */
 public class LoginDto {
 	
-	
+	@NotEmpty(message = "customerId cannot be null")
 	private String customerId;
+	@NotEmpty(message = "password cannot be null")
 	private String password;
 	
 	public String getCustomerId() {
